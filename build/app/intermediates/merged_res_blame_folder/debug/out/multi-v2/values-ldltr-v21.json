@@ -4,7 +4,7 @@
             "outputFile": "com.example.supabase_flutter_app-mergeDebugResources-40:/values-ldltr-v21/values-ldltr-v21.xml",
             "map": [
                 {
-                    "source": "/Users/thanhpham/.gradle/caches/transforms-3/6ddfe7bc5a026c54878de2bc1391ef46/transformed/appcompat-1.1.0/res/values-ldltr-v21/values-ldltr-v21.xml",
+                    "source": "C:\\Users\\THANH VINH\\.gradle\\caches\\8.9\\transforms\\6ac6f0171c329bf0ca0287bd70650cb9\\transformed\\appcompat-1.1.0\\res\\values-ldltr-v21\\values-ldltr-v21.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

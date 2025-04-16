@@ -1,0 +1,1 @@
+D:\Study\The_Ultimate_Flutter\projects\android\flutter_todo_supabase\build\app\intermediates\cxx\Debug\6i1g3j5y\obj\armeabi-v7a

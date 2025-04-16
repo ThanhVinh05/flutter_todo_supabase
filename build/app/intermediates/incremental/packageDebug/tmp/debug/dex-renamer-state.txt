@@ -1,9 +1,9 @@
-#Sun Mar 23 15:16:25 ICT 2025
-base.0=/Users/thanhpham/Documents/personal/personal_workplace/supabase_flutter_app/build/app/intermediates/dex/debug/mergeExtDexDebug/classes.dex
-base.1=/Users/thanhpham/Documents/personal/personal_workplace/supabase_flutter_app/build/app/intermediates/dex/debug/mergeLibDexDebug/0/classes.dex
-base.2=/Users/thanhpham/Documents/personal/personal_workplace/supabase_flutter_app/build/app/intermediates/dex/debug/mergeProjectDexDebug/0/classes.dex
-base.3=/Users/thanhpham/Documents/personal/personal_workplace/supabase_flutter_app/build/app/intermediates/dex/debug/mergeProjectDexDebug/1/classes.dex
-base.4=/Users/thanhpham/Documents/personal/personal_workplace/supabase_flutter_app/build/app/intermediates/dex/debug/mergeProjectDexDebug/5/classes.dex
+#Wed Apr 16 20:10:10 ICT 2025
+base.0=D\:\\Study\\The_Ultimate_Flutter\\projects\\android\\flutter_todo_supabase\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
+base.1=D\:\\Study\\The_Ultimate_Flutter\\projects\\android\\flutter_todo_supabase\\build\\app\\intermediates\\dex\\debug\\mergeLibDexDebug\\0\\classes.dex
+base.2=D\:\\Study\\The_Ultimate_Flutter\\projects\\android\\flutter_todo_supabase\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
+base.3=D\:\\Study\\The_Ultimate_Flutter\\projects\\android\\flutter_todo_supabase\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\1\\classes.dex
+base.4=D\:\\Study\\The_Ultimate_Flutter\\projects\\android\\flutter_todo_supabase\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\5\\classes.dex
 path.0=classes.dex
 path.1=0/classes.dex
 path.2=0/classes.dex

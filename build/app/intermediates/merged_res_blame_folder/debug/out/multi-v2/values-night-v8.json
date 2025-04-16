@@ -4,7 +4,26 @@
             "outputFile": "com.example.supabase_flutter_app-mergeDebugResources-40:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "/Users/thanhpham/.gradle/caches/transforms-3/6ddfe7bc5a026c54878de2bc1391ef46/transformed/appcompat-1.1.0/res/values-night-v8/values-night-v8.xml",
+                    "source": "D:\\Study\\The_Ultimate_Flutter\\projects\\android\\flutter_todo_supabase\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "from": {
+                        "startLines": "3,14",
+                        "startColumns": "4,4",
+                        "startOffsets": "175,831",
+                        "endLines": "7,16",
+                        "endColumns": "12,12",
+                        "endOffsets": "482,997"
+                    },
+                    "to": {
+                        "startLines": "2,6",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,236",
+                        "endLines": "5,8",
+                        "endColumns": "12,12",
+                        "endOffsets": "231,400"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\THANH VINH\\.gradle\\caches\\8.9\\transforms\\6ac6f0171c329bf0ca0287bd70650cb9\\transformed\\appcompat-1.1.0\\res\\values-night-v8\\values-night-v8.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",
@@ -18,25 +37,6 @@
                         "startOffsets": "405,475,559,643,739,841,943,1037",
                         "endColumns": "69,83,83,95,101,101,93,88",
                         "endOffsets": "470,554,638,734,836,938,1032,1121"
-                    }
-                },
-                {
-                    "source": "/Users/thanhpham/Documents/personal/personal_workplace/supabase_flutter_app/android/app/src/main/res/values-night/styles.xml",
-                    "from": {
-                        "startLines": "3,14",
-                        "startColumns": "4,4",
-                        "startOffsets": "172,817",
-                        "endLines": "7,16",
-                        "endColumns": "12,12",
-                        "endOffsets": "475,981"
-                    },
-                    "to": {
-                        "startLines": "2,6",
-                        "startColumns": "4,4",
-                        "startOffsets": "55,236",
-                        "endLines": "5,8",
-                        "endColumns": "12,12",
-                        "endOffsets": "231,400"
                     }
                 }
             ]
