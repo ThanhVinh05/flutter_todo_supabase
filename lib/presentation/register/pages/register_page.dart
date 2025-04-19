@@ -1,30 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:supabase_flutter_app/bloc/Register/register_bloc.dart';
-import 'package:supabase_flutter_app/bloc/Register/register_event.dart';
-import 'package:supabase_flutter_app/bloc/Register/register_state.dart';
+import 'package:supabase_flutter_app/presentation/register/bloc/register_bloc.dart';
+import 'package:supabase_flutter_app/presentation/register/bloc/register_event.dart';
+import 'package:supabase_flutter_app/presentation/register/bloc/register_state.dart';
 
-class UserRegister extends StatelessWidget {
-  const UserRegister({super.key});
+
+class RegisterPage extends StatelessWidget {
+  const RegisterPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => RegisterBloc(),
-      child: UserRegisterView(),
+      child: RegisterPageView(),
     );
   }
 }
 
-class UserRegisterView extends StatefulWidget {
-  const UserRegisterView({super.key});
+class RegisterPageView extends StatefulWidget {
+  const RegisterPageView({super.key});
 
   @override
-  _UserRegisterState createState() => _UserRegisterState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _UserRegisterState extends State<UserRegisterView> {
+class _RegisterPageState extends State<RegisterPageView> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
@@ -95,7 +96,10 @@ class _UserRegisterState extends State<UserRegisterView> {
       body: BlocConsumer<RegisterBloc, RegisterState>(
         listener: (context, state) {
           if (state.status == RegisterStatus.success) {
-            _showDialog('Đăng ký thành công! Vui lòng kiểm tra email của bạn.');
+            // _showDialog('Đăng ký thành công! Vui lòng kiểm tra email của bạn.');
+            Navigator.pop(
+                context
+            );
           } else if (state.status == RegisterStatus.failureCheck) {
             _showDialog('Vui lòng điền khớp thông tin Password.');
           } else if (state.status == RegisterStatus.failure) {

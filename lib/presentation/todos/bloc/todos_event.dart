@@ -1,4 +1,4 @@
-import 'package:supabase_flutter_app/models/todo.dart';
+import 'package:supabase_flutter_app/data/models/todo.dart';
 
 abstract class TodosEvent  {}
 

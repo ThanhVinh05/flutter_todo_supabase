@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:supabase_flutter_app/login_page.dart';
+import 'package:supabase_flutter_app/presentation/login/pages/login_page.dart';
 
-class UserResetPassword extends StatefulWidget {
+class ResetPasswordPage extends StatefulWidget {
 
   final Session session;
 
-  const UserResetPassword({super.key, required this.session});
+  const ResetPasswordPage({super.key, required this.session});
 
   @override
-  _UserResetPasswordState createState() => _UserResetPasswordState();
+  _ResetPasswordPageState createState() => _ResetPasswordPageState();
 }
 
-class _UserResetPasswordState extends State<UserResetPassword> {
+class _ResetPasswordPageState extends State<ResetPasswordPage> {
   final _newPasswordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   final _supabase = Supabase.instance.client;
@@ -39,7 +39,7 @@ class _UserResetPasswordState extends State<UserResetPassword> {
       await _supabase.auth.signOut();
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => UserLogin()),
+        MaterialPageRoute(builder: (context) => LoginPage()),
             (route) => false,
       );
     } on AuthException catch (e) {

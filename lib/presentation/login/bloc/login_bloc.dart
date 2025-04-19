@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as sb;
-import 'package:supabase_flutter_app/bloc/Login/login_event.dart';
-import 'package:supabase_flutter_app/bloc/Login/login_state.dart';
+import 'package:supabase_flutter_app/presentation/login/bloc/login_event.dart';
+import 'package:supabase_flutter_app/presentation/login/bloc/login_state.dart';
+
 
 class LoginBloc extends Bloc<LoginInEvent,LoginState>{
   LoginBloc() : super(

@@ -1,33 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:supabase_flutter_app/bloc/Login/login_bloc.dart';
-import 'package:supabase_flutter_app/bloc/Login/login_event.dart';
-import 'package:supabase_flutter_app/bloc/Login/login_state.dart';
-import 'package:supabase_flutter_app/forgotPassword_page.dart';
-import 'package:supabase_flutter_app/home_page.dart';
-import 'package:supabase_flutter_app/register_page.dart';
 
-class UserLogin extends StatelessWidget {
-  const UserLogin({super.key});
+import 'package:supabase_flutter_app/forgotPassword_page.dart';
+import 'package:supabase_flutter_app/presentation/login/bloc/login_bloc.dart';
+import 'package:supabase_flutter_app/presentation/login/bloc/login_event.dart';
+import 'package:supabase_flutter_app/presentation/login/bloc/login_state.dart';
+import 'package:supabase_flutter_app/presentation/todos/pages/home_page.dart';
+import 'package:supabase_flutter_app/presentation/register/pages/register_page.dart';
+
+class LoginPage extends StatelessWidget {
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => LoginBloc(),
-      child: UserLoginView(),
+      child: LoginPageView(),
     );
   }
 }
 
-class UserLoginView extends StatefulWidget {
-  const UserLoginView({super.key});
+class LoginPageView extends StatefulWidget {
+  const LoginPageView({super.key});
 
   @override
-  _UserLoginState createState() => _UserLoginState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _UserLoginState extends State<UserLoginView> {
+class _LoginPageState extends State<LoginPageView> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _emailSendController = TextEditingController();
@@ -52,7 +53,7 @@ class _UserLoginState extends State<UserLoginView> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => UserForgotPassword(
+          builder: (context) => ForgotPasswordPage(
             email: _emailSendController.text.trim(),
           ),
         ),
@@ -128,7 +129,7 @@ class _UserLoginState extends State<UserLoginView> {
           if (state.status == LoginStatus.success) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => HomeScreen()),
+              MaterialPageRoute(builder: (context) => HomePage()),
             );
           } else if (state.status == LoginStatus.failure) {
             _showDialog('Thông tin tài khoản không chính xác');
@@ -208,7 +209,7 @@ class _UserLoginState extends State<UserLoginView> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => UserRegister(),
+                          builder: (context) => RegisterPage(),
                         ),
                       );
                     },

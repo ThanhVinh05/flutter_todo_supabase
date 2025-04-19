@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as sb;
-import 'package:supabase_flutter_app/bloc/Todos/todos_event.dart';
-import 'package:supabase_flutter_app/bloc/Todos/todos_state.dart';
-import 'package:supabase_flutter_app/models/todo.dart';
+import 'package:supabase_flutter_app/data/models/todo.dart';
+import 'package:supabase_flutter_app/presentation/todos/bloc/todos_event.dart';
+import 'package:supabase_flutter_app/presentation/todos/bloc/todos_state.dart';
+
 
 
 
@@ -47,12 +48,16 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
 
   Future<void> _onToggleTodoCompletion(ToggleTodoCompletion event, Emitter<TodosState> emit) async {
     try {
+
       await _supabase
           .from('todos')
           .update({'is_completed': !event.todo.isCompleted}).eq('id', event.todo.id);
+
       final updatedTodos = await _fetchTodos(filterBy: state.filterBy, sortBy: state.sortBy);
+
       emit(state.copyWith(todos: updatedTodos));
     } catch (e) {
+
       emit(state.copyWith(status: TodosStatus.failure));
     }
   }

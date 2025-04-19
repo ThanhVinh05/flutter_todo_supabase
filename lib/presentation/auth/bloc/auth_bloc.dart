@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as sb;
-import 'package:supabase_flutter_app/bloc/Auth/auth_event.dart';
-import 'package:supabase_flutter_app/bloc/Auth/auth_state.dart';
+import 'package:supabase_flutter_app/presentation/Auth/bloc/auth_event.dart';
+import 'package:supabase_flutter_app/presentation/Auth/bloc/auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent,AuthState>{
   AuthBloc() : super(

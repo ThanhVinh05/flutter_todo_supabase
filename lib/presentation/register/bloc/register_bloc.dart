@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as sb;
-import 'package:supabase_flutter_app/bloc/Register/register_event.dart';
-import 'package:supabase_flutter_app/bloc/Register/register_state.dart';
+import 'package:supabase_flutter_app/presentation/register/bloc/register_event.dart';
+import 'package:supabase_flutter_app/presentation/register/bloc/register_state.dart';
+
 
 class RegisterBloc extends Bloc<RegisterInEvent,RegisterState> {
   RegisterBloc() : super(

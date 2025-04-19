@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:supabase_flutter_app/login_page.dart';
-import 'package:supabase_flutter_app/bloc/Auth/auth_bloc.dart';
-import 'package:supabase_flutter_app/bloc/Auth/auth_event.dart';
-import 'package:supabase_flutter_app/bloc/Auth/auth_state.dart';
-import 'package:supabase_flutter_app/home_page.dart';
+import 'package:supabase_flutter_app/presentation/login/pages/login_page.dart';
+
+import 'package:supabase_flutter_app/presentation/todos/pages/home_page.dart';
+import 'package:supabase_flutter_app/presentation/Auth/bloc/auth_event.dart';
+import 'package:supabase_flutter_app/presentation/Auth/bloc/auth_state.dart';
+import 'package:supabase_flutter_app/presentation/auth/bloc/auth_bloc.dart';
 
 class AuthWrapper extends StatelessWidget {
   const AuthWrapper({super.key});
@@ -28,7 +29,7 @@ class AuthWrapperView extends StatelessWidget {
             return Center(child: CircularProgressIndicator());
           }
           else if(state.isAuthenticated && state.status == AuthStatus.success){
-            return HomeScreen();
+            return HomePage();
           }
           else if(state.status == AuthStatus.failure){
             showDialog(
@@ -38,7 +39,7 @@ class AuthWrapperView extends StatelessWidget {
                   content: Text('Failed to Authenticate'),
                 ));
           }
-          return UserLogin();
+          return LoginPage();
         });
   }
 }

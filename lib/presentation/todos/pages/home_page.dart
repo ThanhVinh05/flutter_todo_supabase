@@ -1,32 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:supabase_flutter_app/bloc/Todos/todos_bloc.dart';
-import 'package:supabase_flutter_app/bloc/Todos/todos_event.dart';
-import 'package:supabase_flutter_app/bloc/Todos/todos_state.dart';
-import 'package:supabase_flutter_app/login_page.dart';
-import 'package:supabase_flutter_app/models/todo.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+import 'package:supabase_flutter_app/presentation/login/pages/login_page.dart';
+import 'package:supabase_flutter_app/data/models/todo.dart';
+import 'package:supabase_flutter_app/presentation/todos/bloc/todos_bloc.dart';
+import 'package:supabase_flutter_app/presentation/todos/bloc/todos_event.dart';
+import 'package:supabase_flutter_app/presentation/todos/bloc/todos_state.dart';
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => TodosBloc(),
-      child: HomeScreenView(),
+      child: HomePageView(),
     );
   }
 }
 
-class HomeScreenView extends StatefulWidget {
-  const HomeScreenView({super.key});
+class HomePageView extends StatefulWidget {
+  const HomePageView({super.key});
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _HomeScreenState extends State<HomeScreenView> {
+class _HomePageState extends State<HomePageView> {
   final _supabase = Supabase.instance.client;
   final _taskController = TextEditingController();
 
@@ -143,7 +144,7 @@ class _HomeScreenState extends State<HomeScreenView> {
               if (mounted) {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => UserLogin()),
+                  MaterialPageRoute(builder: (context) => LoginPage()),
                 );
               }
             },
@@ -219,7 +220,7 @@ class _HomeScreenState extends State<HomeScreenView> {
                             children: [
                               Checkbox(
                                 value: todo.isCompleted,
-                                onChanged: (value) => _toggleTodoCompletion(todo.copyWith(isCompleted: value)),
+                                onChanged: (value) => _toggleTodoCompletion(todo),
                                 activeColor: Colors.blue,
                                 checkColor: Colors.white,
                               ),

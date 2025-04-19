@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter_app/auth_wrapper.dart';
+import 'package:supabase_flutter_app/presentation/auth/pages/auth_wrapper.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

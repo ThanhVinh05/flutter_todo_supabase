@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:supabase_flutter_app/resetPassword_page.dart';
 
-class UserForgotPassword extends StatefulWidget {
+class ForgotPasswordPage extends StatefulWidget {
   final String email;
-  const UserForgotPassword({super.key, required this.email});
+  const ForgotPasswordPage({super.key, required this.email});
 
   @override
-  _UserForgotPasswordState createState() => _UserForgotPasswordState();
+  _ForgotPasswordPageState createState() => _ForgotPasswordPageState();
 }
 
-class _UserForgotPasswordState extends State<UserForgotPassword> {
+class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final _otpController = TextEditingController();
   final _supabase = Supabase.instance.client;
 
@@ -27,7 +27,7 @@ class _UserForgotPasswordState extends State<UserForgotPassword> {
           context,
           MaterialPageRoute(
             builder: (context) =>
-                UserResetPassword(
+                ResetPasswordPage(
                   session: response.session!,
                 ),
           ),

@@ -32,21 +32,6 @@ class Todo {
       'created_at': createdAt.toIso8601String(),
     };
   }
-  Todo copyWith({
-    String? id,
-    String? userId,
-    String? task,
-    bool? isCompleted,
-    DateTime? createdAt,
-  }) {
-    return Todo(
-      id: id ?? this.id,
-      userId: userId ?? this.userId,
-      task: task ?? this.task,
-      isCompleted: isCompleted ?? this.isCompleted,
-      createdAt: createdAt ?? this.createdAt,
-    );
-  }
   @override
   List<Object?> get props => [id, userId, task, isCompleted, createdAt];
 }
