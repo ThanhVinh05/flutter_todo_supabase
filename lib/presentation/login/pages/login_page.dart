@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'package:supabase_flutter_app/forgotPassword_page.dart';
+import 'package:supabase_flutter_app/presentation/password_reset/pages/forgotPassword_page.dart';
 import 'package:supabase_flutter_app/presentation/login/bloc/login_bloc.dart';
 import 'package:supabase_flutter_app/presentation/login/bloc/login_event.dart';
 import 'package:supabase_flutter_app/presentation/login/bloc/login_state.dart';
+import 'package:supabase_flutter_app/presentation/password_reset/bloc/password_reset_bloc.dart';
+import 'package:supabase_flutter_app/presentation/password_reset/bloc/password_reset_event.dart';
+import 'package:supabase_flutter_app/presentation/password_reset/bloc/password_reset_state.dart';
 import 'package:supabase_flutter_app/presentation/todos/pages/home_page.dart';
 import 'package:supabase_flutter_app/presentation/register/pages/register_page.dart';
 
@@ -14,8 +17,11 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => LoginBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => LoginBloc()),
+        BlocProvider(create: (context) => PasswordResetBloc()),
+      ],
       child: LoginPageView(),
     );
   }
@@ -41,60 +47,14 @@ class _LoginPageState extends State<LoginPageView> {
             password: _passwordController.text)
     );
   }
-  Future<void> _sendGmail() async {
-    try {
-      // await _supabase.auth.signInWithOtp(
-      //   email: _emailSendController.text.trim(),
-      //   shouldCreateUser: false, // Không tạo user mới nếu email chưa tồn tại
-      // );
-      await _supabase.auth.resetPasswordForEmail(
-        _emailSendController.text.trim(),
-      );
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ForgotPasswordPage(
-            email: _emailSendController.text.trim(),
-          ),
-        ),
-      );
-    } on AuthException catch (e) {
-      if (e.message.contains('user not found')) {
-        _showDialog('Email không tồn tại!');
-      } else {
-        _showDialog('Lỗi hệ thống: ${e.message}');
-      }
-    } catch (e) {
-      _showDialog('Lỗi không xác định!');
-    }
-  }
-
-  // Future<void> _signIn() async {
-  //   setState(() {
-  //     _isLoading = true;
-  //   });
-  //
-  //   try {
-  //     final response = await _supabase.auth.signInWithPassword(
-  //       email: _emailController.text.trim(),
-  //       password: _passwordController.text.trim(),
-  //     );
-  //
-  //     if (response.user != null) {
-  //       Navigator.pushReplacement(
-  //         context,
-  //         MaterialPageRoute(builder: (context) => HomeScreen()),
-  //       );
-  //     }
-  //   } catch (e) {
-  //     _showDialog('Thông tin tài khoản không chính xác');
-  //   } finally {
-  //     setState(() {
-  //       _isLoading = false;
-  //     });
-  //   }
-  // }
   
+  void _sendResetEmail() {
+    context.read<PasswordResetBloc>().add(
+      SendResetEmail(
+        email: _emailSendController.text.trim(),
+      ),
+    );
+  }
 
   void _showDialog(String message) {
     showDialog(
@@ -218,46 +178,76 @@ class _LoginPageState extends State<LoginPageView> {
                       style: TextStyle(color: Colors.white70),
                     ),
                   ),
-                  TextButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (dialogContext) {
-                          return AlertDialog(
-                            title: Text('Email'),
-                            content: TextField(
-                              controller: _emailSendController,
-                              keyboardType: TextInputType.emailAddress,
-                              decoration: InputDecoration(
-                                hintText: 'Enter your email',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                              ),
-                              autofocus: true,
+                  BlocConsumer<PasswordResetBloc, PasswordResetState>(
+                    listener: (context, state) {
+                      if (state.status == PasswordResetStatus.failure) {
+                        _showDialog('Email không tồn tại hoặc không hợp lệ!');
+                        Navigator.of(context).pop(); // Close the dialog
+                      } else if (state.status == PasswordResetStatus.emailSent) {
+                        Navigator.of(context).pop(); // Close the dialog
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ForgotPasswordPage(
+                              email: state.email,
                             ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(dialogContext).pop();
-                                },
-                                child: Text('Cancel'),
-                              ),
-                              FilledButton(
-                                onPressed: _sendGmail,
-                                child: Text('Send'),
-                              ),
-                            ],
+                          ),
+                        );
+                      }
+                    },
+                    builder: (context, state) {
+                      return TextButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (dialogContext) {
+                              return AlertDialog(
+                                title: Text('Email'),
+                                content: TextField(
+                                  controller: _emailSendController,
+                                  keyboardType: TextInputType.emailAddress,
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter your email',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                  ),
+                                  autofocus: true,
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(dialogContext).pop();
+                                    },
+                                    child: Text('Cancel'),
+                                  ),
+                                  FilledButton(
+                                    onPressed: state.status == PasswordResetStatus.loading ? null : _sendResetEmail,
+                                    child: state.status == PasswordResetStatus.loading
+                                        ? SizedBox(
+                                            width: 20,
+                                            height: 20,
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 2,
+                                              color: Colors.white,
+                                            ),
+                                          )
+                                        : Text('Send'),
+                                  ),
+                                ],
+                              );
+                            },
                           );
                         },
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(double.infinity, 40.0),
+                        ),
+                        child: Text(
+                          'Forgot password!',
+                          style: TextStyle(color: Colors.white70),
+                        ),
                       );
                     },
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size(double.infinity, 40.0),
-                    ),
-                    child: Text(
-                      'Forgot password!',
-                      style: TextStyle(color: Colors.white70),),
                   ),
                 ],
               ),
