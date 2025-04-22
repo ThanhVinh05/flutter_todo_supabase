@@ -1,14 +1,18 @@
 import 'package:supabase_flutter_app/data/models/todo.dart';
 
-abstract class TodosEvent  {}
+abstract class TodosEvent {}
 
 class LoadTodos extends TodosEvent {}
 
 class AddTodo extends TodosEvent {
-  final String task;
+  final String name;
+  final String? description;
+  final String? priority;
 
   AddTodo({
-    required this.task
+    required this.name,
+    this.description,
+    this.priority,
   });
 }
 
@@ -16,7 +20,7 @@ class ToggleTodoCompletion extends TodosEvent {
   final Todo todo;
 
   ToggleTodoCompletion({
-    required this.todo
+    required this.todo,
   });
 }
 
@@ -24,22 +28,32 @@ class DeleteTodo extends TodosEvent {
   final String id;
 
   DeleteTodo({
-    required this.id
+    required this.id,
   });
 }
 
 class ChangeFilter extends TodosEvent {
-  final String filterBy;
+  final String filterBy; // 'all', 'completed', 'incomplete'
 
   ChangeFilter({
-    required this.filterBy
+    required this.filterBy,
   });
 }
 
 class ChangeSort extends TodosEvent {
+  // Các giá trị có thể là: 'created_at_newest', 'created_at_oldest', 'name_asc', 'name_desc', 'priority_asc', 'priority_desc'
   final String sortBy;
 
   ChangeSort({
-    required this.sortBy
+    required this.sortBy,
+  });
+}
+
+// Thêm event cho chức năng tìm kiếm
+class SearchTodos extends TodosEvent {
+  final String query;
+
+  SearchTodos({
+    required this.query,
   });
 }

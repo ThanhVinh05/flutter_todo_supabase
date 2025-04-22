@@ -30,16 +30,22 @@ class HomePageView extends StatefulWidget {
 class _HomePageState extends State<HomePageView> {
   final _supabase = Supabase.instance.client;
   final _taskController = TextEditingController();
+  final _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    _searchController.addListener(_onSearchChanged);
     context.read<TodosBloc>().add(LoadTodos());
+  }
+  void _onSearchChanged() {
+    // Gửi event SearchTodos khi nội dung search input thay đổi
+    context.read<TodosBloc>().add(SearchTodos(query: _searchController.text));
   }
 
   Future<void> _addTodo() async {
     if (_taskController.text.isNotEmpty) {
-      context.read<TodosBloc>().add(AddTodo(task: _taskController.text));
+      context.read<TodosBloc>().add(AddTodo(name: _taskController.text));
       _taskController.clear();
     }
   }
@@ -164,6 +170,32 @@ class _HomePageState extends State<HomePageView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  TextField(
+                    controller: _searchController, // Sử dụng _searchController
+                    style: TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      hintText: 'Enter Search Content', // Hint text cho tìm kiếm
+                      hintStyle: TextStyle(color: Colors.grey),
+                      prefixIcon: Icon(Icons.search, color: Colors.grey), // Icon search
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
+                      suffixIcon: state.searchQuery.isNotEmpty ? IconButton( // Thêm nút clear search
+                        icon: Icon(Icons.clear, color: Colors.grey),
+                        onPressed: () {
+                          _searchController.clear();
+                          // Tự động kích hoạt search khi clear
+                        },
+                      ) : null,
+                    ),
+                    // Listener đã được thêm trong initState
+                  ),
+                  SizedBox(height: 24),
                   Row(
                     children: [
                       Expanded(
@@ -213,23 +245,23 @@ class _HomePageState extends State<HomePageView> {
                     itemBuilder: (context, index) {
                       final todo = state.todos[index];
                       return Container(
-                        color: todo.isCompleted ? Colors.grey[900] : Colors.transparent,
+                        color: todo.status ? Colors.grey[900] : Colors.transparent,
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 8.0),
                           child: Row(
                             children: [
                               Checkbox(
-                                value: todo.isCompleted,
+                                value: todo.status,
                                 onChanged: (value) => _toggleTodoCompletion(todo),
                                 activeColor: Colors.blue,
                                 checkColor: Colors.white,
                               ),
                               Expanded(
                                 child: Text(
-                                  todo.task,
+                                  todo.name,
                                   style: TextStyle(
                                     color: Colors.white,
-                                    decoration: todo.isCompleted ? TextDecoration.lineThrough : null,
+                                    decoration: todo.status ? TextDecoration.lineThrough : null,
                                   ),
                                 ),
                               ),

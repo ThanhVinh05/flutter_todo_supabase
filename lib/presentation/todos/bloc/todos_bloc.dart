@@ -18,6 +18,7 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
     on<DeleteTodo>(_onDeleteTodo);
     on<ChangeFilter>(_onChangeFilter);
     on<ChangeSort>(_onChangeSort);
+    on<SearchTodos>(_onSearchTodos);
   }
 
   final _supabase = sb.Supabase.instance.client;
@@ -34,10 +35,10 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
 
   Future<void> _onAddTodo(AddTodo event, Emitter<TodosState> emit) async {
     try {
-      await _supabase.from('todos').insert({
+      await _supabase.from('todosConvert').insert({
         'user_id': _supabase.auth.currentUser!.id,
-        'task': event.task.trim(),
-        'is_completed': false,
+        'name': event.name.trim(),
+        'status': false,
       });
       final updatedTodos = await _fetchTodos(filterBy: state.filterBy, sortBy: state.sortBy);
       emit(state.copyWith(todos: updatedTodos));
@@ -50,8 +51,8 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
     try {
 
       await _supabase
-          .from('todos')
-          .update({'is_completed': !event.todo.isCompleted}).eq('id', event.todo.id);
+          .from('todosConvert')
+          .update({'status': !event.todo.status}).eq('id', event.todo.id);
 
       final updatedTodos = await _fetchTodos(filterBy: state.filterBy, sortBy: state.sortBy);
 
@@ -64,7 +65,7 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
 
   Future<void> _onDeleteTodo(DeleteTodo event, Emitter<TodosState> emit) async {
     try {
-      await _supabase.from('todos').delete().eq('id', event.id);
+      await _supabase.from('todosConvert').delete().eq('id', event.id);
       final updatedTodos = await _fetchTodos(filterBy: state.filterBy, sortBy: state.sortBy);
       emit(state.copyWith(todos: updatedTodos));
     } catch (e) {
@@ -92,16 +93,20 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
     }
   }
 
-  Future<List<Todo>> _fetchTodos({String filterBy = 'all', String sortBy = 'newest'}) async {
+  Future<List<Todo>> _fetchTodos({String filterBy = 'all', String sortBy = 'newest', String searchQuery = '',}) async {
     var query = _supabase
-        .from('todos')
+        .from('todosConvert')
         .select()
         .eq('user_id', _supabase.auth.currentUser!.id);
 
     if (filterBy == 'completed') {
-      query = query.eq('is_completed', true);
+      query = query.eq('status', true);
     } else if (filterBy == 'incomplete') {
-      query = query.eq('is_completed', false);
+      query = query.eq('status', false);
+    }
+    // Apply search
+    if (searchQuery.isNotEmpty) {
+      query = query.ilike('name', '%$searchQuery%');
     }
 
     final finalQuery = sortBy == 'newest'
@@ -110,5 +115,16 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
 
     final response = await finalQuery;
     return (response as List).map((todo) => Todo.fromJson(todo)).toList();
+  }
+
+  Future<void> _onSearchTodos(SearchTodos event, Emitter<TodosState> emit) async {
+    emit(state.copyWith(status: TodosStatus.loading, searchQuery: event.query));
+    try {
+      final response = await _fetchTodos(filterBy: state.filterBy, sortBy: state.sortBy, searchQuery: event.query,
+      );
+      emit(state.copyWith(status: TodosStatus.success, todos: response));
+    } catch (e) {
+      emit(state.copyWith(status: TodosStatus.failure));
+    }
   }
 }
