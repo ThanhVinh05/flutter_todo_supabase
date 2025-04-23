@@ -7,12 +7,12 @@ class LoadTodos extends TodosEvent {}
 class AddTodo extends TodosEvent {
   final String name;
   final String? description;
-  final String? priority;
+  final String priority;
 
   AddTodo({
     required this.name,
     this.description,
-    this.priority,
+    required this.priority,
   });
 }
 
@@ -21,6 +21,22 @@ class ToggleTodoCompletion extends TodosEvent {
 
   ToggleTodoCompletion({
     required this.todo,
+  });
+}
+
+class UpdateTodo extends TodosEvent {
+  final String id;
+  final String name;
+  final String? description;
+  final bool status;
+  final String priority;
+
+  UpdateTodo({
+    required this.id,
+    required this.name,
+    this.description,
+    required this.status,
+    required this.priority,
   });
 }
 

@@ -3,7 +3,7 @@ class Todo {
   final String userId;
   final String name;
   final String? description;
-  final String? priority;
+  final String priority;
   final bool status;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -13,7 +13,7 @@ class Todo {
     required this.userId,
     required this.name,
     this.description,
-    this.priority,
+    required this.priority,
     required this.status,
     required this.createdAt,
     required this.updatedAt,
